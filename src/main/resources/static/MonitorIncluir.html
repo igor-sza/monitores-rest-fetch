@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Monitores</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #A020F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 700px;
+            text-align: center;
+        }
+        h1 {
+            color: #4B0082;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 20px;
+            color: #4B0082;
+            margin-bottom: 8px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            border: 1px solid #4B0082;
+            margin-right: 100px;
+            border-radius: 5px;
+            font-size: 15px;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+        button {
+            font-size: 3vh;
+            background-color: #A020F0;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #4B0082;
+        }
+        .user-info {
+            font-size: 4vh;
+            color: #4B0082;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>INCLUIR MONITOR</h1>
+
+    <p class="user-info" id="userInfo"></p>
+
+    <form id="monitorForm">
+        <label for="monitorNome">Modelo do Monitor:</label>
+        <input type="text" id="monitorNome" placeholder="MODELO" required>
+
+        <label for="monitorTipo">Tipo de Tela:</label>
+        <input type="text" id="monitorTipo" placeholder="OLED, IPS, VA ou TN" required>
+
+        <label for="monitorTamanho">Tamanho:</label>
+        <input type="number" id="monitorTamanho" placeholder="Ex: 32" required>
+
+        <label for="monitorPreco">Valor:</label>
+        <input type="number" id="monitorPreco" placeholder="Ex: 2999" required>
+
+        <button type="submit">Cadastrar Monitor</button>
+    </form>
+</div>
+
+<script>
+    const usuario = {
+        nome: "Igor Daniel de Souza", ra: "12326074"
+    };
+
+    document.getElementById("userInfo").innerText = `Nome: ${usuario.nome}, RA: ${usuario.ra}`;
+
+    document.getElementById("monitorForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const novoMonitor = {
+            nome: document.getElementById("monitorNome").value,
+            tipo: document.getElementById("monitorTipo").value,
+            tamanho: parseFloat(document.getElementById("monitorTamanho").value),
+            preco: parseFloat(document.getElementById("monitorPreco").value)
+        };
+
+        fetch("/monitores", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(novoMonitor)
+        }).then(response => {
+            if (response.ok) {
+                alert("Monitor cadastrado com sucesso!");
+                document.getElementById("monitorForm").reset();
+            } else {
+                alert("Erro ao cadastrar o monitor.");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
